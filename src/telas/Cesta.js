@@ -1,82 +1,48 @@
 import React from "react";
-import { StyleSheet, Image, Dimensions, Text, View } from "react-native";
+import { FlatList, StyleSheet, Image, Dimensions, Text, View } from "react-native";
 
-import Texto from '../components/Texto';
+import Topo from "./Cesta/components/Topo";
+import Detalhes from "./Cesta/components/Detalhes";
+import Item from "./Cesta/components/Item";
+import Texto from "../components/Texto";
 
-import topo from '../../assets/topo.png';
-import logo from '../../assets/logo.png';
-
-const width = Dimensions.get('screen').width;
-
-export default function Cesta() {
+export default function Cesta({ topo, detalhes, itens }) {
     return <>
-    <Image source={topo} style={estilos.topo} />
-    <Text style={estilos.titulo}>Detalhe da cesta</Text>
-
-    <View style={estilos.cesta}>
-        <Texto style={estilos.nome}>Cesta de Verduras</Texto>
-        <View style={estilos.fazenda}>
-            <Image source={logo} style={estilos.nomeFazenda} />
-            <Texto style={estilos.nomeFazenda}>Jenny Jack Farm</Texto>
-        </View>
-        <Texto style={estilos.descricao}>Uma cesta com produtos selecionados 
-              cuidadosamente da fazenda direto 
-              para sua cozinha</Texto>
-        <Texto style={estilos.preco}>R$ 40,00</Texto>      
-    </View>
+        <FlatList 
+            data={itens.lista}
+            renderItem={Item}
+            keyExtractor={({nome}) => nome}
+            ListHeaderComponent={() => {
+                return <>
+                    <Topo {...topo} />
+                    <View style={estilos.cesta}>
+                        <Detalhes {...detalhes} /> 
+                        <Texto style={estilos.titulo}>{itens.titulo}</Texto>         
+                    </View>
+                </>
+            }}
+        />
+    <link rel="shortcut icon" href="#"></link>
     </>
 }
 
 const estilos = StyleSheet.create({
-    topo: {
-        width: "100%",
-        height: 578 / 768 * width,
-        fontFamily: "Montserrat"
-    },
+    
     titulo: {
-       width: "100%", 
-       position: "absolute",
-       textAlign: "center",
-       fontSize: 16,
-       lineHeight: 26,
-       color: "white",
-       fontWeight: "bold",
-       padding: 16
+        color: "#464646",
+        fontWeight: "bold",
+        marginTop: 32,
+        marginBottom: 8,
+        fontSize: 20,
+        lineHeight: 32,
     },
 
     cesta: {
         paddingVertical: 8,
         paddingHorizontal: 16
     },
-    nome: {
-        color: "#464646",
-        fontSize: 26,
-        lineHeight: 42,
-        fontWeight: "bold",
-    },
-    fazenda: {
-        flexDirection: "row",
-        paddingVertical: 12,
-    },
-    imagemFazenda: {
-        width: 32,
-        height: 32,
-    },
-    nomeFazenda: {
-        fontSize: 16,
-        lineHeight: 26,
-        marginLeft: 12
-    },
-    descricao: {
-        color: "#A3A3A3",
-        fontSize: 16,
-        lineHeight: 26
-    },
-    preco: {
-        color: "#2A9F85",
-        fontWeight: "bold",
-        fontSize: 26,
-        lineHeight: 42,
-        marginTop: 8
+    lista: {
+        paddingHorizontal: 16
     }
+    
 });
